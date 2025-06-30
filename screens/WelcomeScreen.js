@@ -1,9 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { PrimaryButton } from "@/components/PrimaryButton/PrimaryButton";
-import { router } from "expo-router";
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Image
@@ -17,7 +16,7 @@ export default function WelcomeScreen() {
           register, and stay connected.
         </Text>
       </View>
-      <PrimaryButton title="GO" onPress={() => router.push("/explore")} />
+      <PrimaryButton title="GO" onPress={() => navigation.navigate("Drawer")} />
     </View>
   );
 }

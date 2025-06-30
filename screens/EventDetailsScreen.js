@@ -1,21 +1,19 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { PrimaryButton } from "@/components/PrimaryButton/PrimaryButton";
-import { router } from "expo-router";
 
-export default function EventDetailsScreen() {
+export default function EventDetailsScreen({ route, navigation }) {
+  const { event } = route.params;
+
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: "https://placehold.co/600x300" }}
-        style={styles.image}
+      <Image source={{ uri: event.imageUrl }} style={styles.image} />
+      <Text style={styles.title}>{event.title}</Text>
+      <Text style={styles.description}>{event.date}</Text>
+      <PrimaryButton
+        title="+ JOIN NOW"
+        onPress={() => navigation.navigate("Login")}
       />
-      <Text style={styles.title}>Event Title</Text>
-      <Text style={styles.description}>
-        This is the detailed description of the event. You can join or find more
-        information here.
-      </Text>
-      <PrimaryButton title="+ JOIN NOW" onPress={() => router.push("/login")} />
     </View>
   );
 }

@@ -4,9 +4,8 @@ import { SearchBar } from "@/components/SearchBar/SearchBar";
 import { CategoryBadge } from "@/components/CategoryBadge/CategoryBadge";
 import { EventCard } from "@/components/EventCard/EventCard";
 import { EventListItem } from "@/components/EventListItem/EventListItem";
-import { router } from "expo-router";
 
-export default function ExploreScreen() {
+export default function ExploreScreen({ navigation }) {
   const categories = [
     "All Events",
     "Concerts",
@@ -74,7 +73,7 @@ export default function ExploreScreen() {
             imageUrl={item.imageUrl}
             title={item.title}
             date={item.date}
-            onPress={() => router.push("/event-details")}
+            onPress={() => navigation.navigate("EventDetails", { event: item })}
           />
         )}
         contentContainerStyle={{ paddingVertical: 8 }}
@@ -87,7 +86,7 @@ export default function ExploreScreen() {
           imageUrl={event.imageUrl}
           title={event.title}
           date={event.date}
-          onPress={() => router.push("/event-details")}
+          onPress={() => navigation.navigate("EventDetails", { event })}
         />
       ))}
     </View>
