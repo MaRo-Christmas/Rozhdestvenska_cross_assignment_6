@@ -1,9 +1,17 @@
-import React from "react";
-import { View, StyleSheet, FlatList, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import { CategoryBadge } from "@/components/CategoryBadge/CategoryBadge";
 import { EventCard } from "@/components/EventCard/EventCard";
 import { EventListItem } from "@/components/EventListItem/EventListItem";
+import { fetchEvents } from "../api/api";
 
 export default function ExploreScreen({ navigation }) {
   const categories = [
@@ -13,40 +21,39 @@ export default function ExploreScreen({ navigation }) {
     "Lectures",
     "Tours",
   ];
-  const events = [
-    {
-      id: "1",
-      imageUrl: "https://placehold.co/200x150",
-      title: "Book presentation",
-      date: "May 27 at 18:30",
-    },
-    {
-      id: "2",
-      imageUrl: "https://placehold.co/200x150",
-      title: "Panel discussion",
-      date: "May 27 at 19:30",
-    },
-  ];
-  const allEvents = [
-    {
-      id: "3",
-      imageUrl: "https://placehold.co/60x60",
-      title: "Live Music",
-      date: "May 29 at 18:30",
-    },
-    {
-      id: "4",
-      imageUrl: "https://placehold.co/60x60",
-      title: "Movie Screening",
-      date: "June 4 at 19:30",
-    },
-    {
-      id: "5",
-      imageUrl: "https://placehold.co/60x60",
-      title: "Speaking Club",
-      date: "June 23 at 18:30",
-    },
-  ];
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchEvents()
+      .then((data) => {
+        setEvents(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching events:", err);
+        setError("Failed to load events");
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#EF5656" />
+        <Text style={styles.loaderText}>Loading events...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.loaderContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -64,23 +71,28 @@ export default function ExploreScreen({ navigation }) {
       </View>
 
       <Text style={styles.sectionTitle}>Upcoming events</Text>
-      <FlatList
-        horizontal
-        data={events}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <EventCard
-            imageUrl={item.imageUrl}
-            title={item.title}
-            date={item.date}
-            onPress={() => navigation.navigate("EventDetails", { event: item })}
-          />
-        )}
-        contentContainerStyle={{ paddingVertical: 8 }}
-      />
-
+      <View style={styles.flatListWrapper}>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={events.slice(0, 5)}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <EventCard
+              imageUrl={item.imageUrl}
+              title={item.title}
+              date={item.date}
+              onPress={() =>
+                navigation.navigate("EventDetails", { event: item })
+              }
+            />
+          )}
+          contentContainerStyle={styles.flatListContainer}
+          style={{ flexGrow: 0 }}
+        />
+      </View>
       <Text style={styles.sectionTitle}>All events</Text>
-      {allEvents.map((event) => (
+      {events.slice(5, 15).map((event) => (
         <EventListItem
           key={event.id}
           imageUrl={event.imageUrl}
@@ -106,5 +118,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginVertical: 8,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loaderText: {
+    marginTop: 12,
+    fontSize: 16,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 16,
+  },
+  flatListContainer: {
+    paddingVertical: 8,
+    paddingLeft: 16,
+  },
+  flatListWrapper: {
+    minHeight: 250,
   },
 });

@@ -16,8 +16,13 @@ export const EventCard: React.FC<EventCardProps> = ({
 }) => {
   return (
     <View style={styles.card}>
-      <Image source={{ uri: imageUrl }} style={styles.image} />
-      <Text style={styles.title}>{title}</Text>
+      <Image
+        source={{ uri: imageUrl || "https://placehold.co/200x150" }}
+        style={styles.image}
+      />
+      <Text style={styles.title}>
+        {title.length > 15 ? `${title.slice(0, 15)}...` : title}
+      </Text>
       <Text style={styles.date}>{date}</Text>
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.buttonText}>Buy tickets</Text>
