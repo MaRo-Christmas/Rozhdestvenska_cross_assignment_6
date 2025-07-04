@@ -4,7 +4,7 @@
 
 Demo video of the application:
 
-[Watch the video](./screen_recording/ice_video_20250703-152400.mp4)
+[Watch the video](./screen_recording/ice_video_20250705-002021.mp4)
 
 ---
 
