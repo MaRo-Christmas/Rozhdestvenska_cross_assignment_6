@@ -1,4 +1,4 @@
-# Homework 8 — API Integration
+# Homework 9 — Global State Management
 
 ## Demo Video
 
@@ -12,16 +12,24 @@ Demo video of the application:
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-The application now integrates **real-time API data** from [JSONPlaceholder](https://jsonplaceholder.typicode.com/) and displays images using [Picsum Photos](https://picsum.photos/), which is based on Unsplash.
+The application now implements **global state management** using **Context API** and **Redux Toolkit**.
 
 ### Features
 
-- Fetching event data from JSONPlaceholder (Posts endpoint)
-- Dynamic image loading via Picsum Photos (Unsplash alternative without API key)
-- Displaying lists of events using FlatList
-- Detailed event pages with navigation
-- Loading indicators and error handling
+- Global theme management via **Context API** (light/dark modes)
+- Favorites management via **Redux Toolkit** (add/remove events to favorites)
+- Theme colors applied to multiple components (event cards, favorites screen, details screen)
+- Favorites list with the ability to remove events
+- Reusable components: EventCard, EventListItem, EventDetails
 - Custom navigation using Stack, Tabs, and Drawer
+- Data fetching from JSONPlaceholder (Posts endpoint) and images from Picsum Photos
+
+### Screenshots
+
+- Theme switcher (light/dark mode)
+- Favorites screen with the list of favorite events
+
+_(Screenshots will be added)_
 
 ### Get started
 
@@ -29,4 +37,10 @@ The application now integrates **real-time API data** from [JSONPlaceholder](htt
 
 ```bash
 npm install
+```
+
+2. Start the development server
+
+```bash
+npm start
 ```

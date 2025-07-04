@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { ThemeContext } from "../../context/ThemeContext";
 
 interface EventListItemProps {
   imageUrl: string;
@@ -14,25 +15,31 @@ export const EventListItem: React.FC<EventListItemProps> = ({
   date,
   onPress,
 }) => {
+  const { themeColors } = useContext(ThemeContext);
+
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.itemContainer, { backgroundColor: themeColors.card }]}
+      onPress={onPress}
+    >
       <Image source={{ uri: imageUrl }} style={styles.image} />
       <View style={styles.info}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.date}>{date}</Text>
+        <Text style={[styles.title, { color: themeColors.text }]}>
+          {title.length > 40 ? `${title.slice(0, 40)}...` : title}
+        </Text>
+        <Text style={[styles.date, { color: themeColors.text }]}>{date}</Text>
       </View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  itemContainer: {
     flexDirection: "row",
     alignItems: "center",
     padding: 12,
-    backgroundColor: "white",
     borderRadius: 8,
-    marginBottom: 8,
+    marginBottom: 12,
   },
   image: {
     width: 60,
@@ -44,10 +51,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontWeight: "bold",
     fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 4,
   },
   date: {
-    color: "#666",
+    fontSize: 14,
   },
 });

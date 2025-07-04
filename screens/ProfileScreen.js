@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function ProfileScreen() {
+  const { themeColors } = useContext(ThemeContext);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profile Screen</Text>
+    <View
+      style={[styles.container, { backgroundColor: themeColors.background }]}
+    >
+      <Text style={[styles.text, { color: themeColors.text }]}>
+        Profile Screen
+      </Text>
     </View>
   );
 }
@@ -15,8 +22,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  title: {
-    fontSize: 24,
+  text: {
+    fontSize: 20,
     fontWeight: "bold",
   },
 });

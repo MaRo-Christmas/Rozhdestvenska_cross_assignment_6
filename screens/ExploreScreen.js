@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   StyleSheet,
   FlatList,
   Text,
   ActivityIndicator,
-  TouchableOpacity,
 } from "react-native";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import { CategoryBadge } from "@/components/CategoryBadge/CategoryBadge";
 import { EventCard } from "@/components/EventCard/EventCard";
 import { EventListItem } from "@/components/EventListItem/EventListItem";
 import { fetchEvents } from "../api/api";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function ExploreScreen({ navigation }) {
+  const { themeColors } = useContext(ThemeContext);
+
   const categories = [
     "All Events",
     "Concerts",
@@ -40,23 +42,37 @@ export default function ExploreScreen({ navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.loaderContainer}>
+      <View
+        style={[
+          styles.loaderContainer,
+          { backgroundColor: themeColors.background },
+        ]}
+      >
         <ActivityIndicator size="large" color="#EF5656" />
-        <Text style={styles.loaderText}>Loading events...</Text>
+        <Text style={[styles.loaderText, { color: themeColors.text }]}>
+          Loading events...
+        </Text>
       </View>
     );
   }
 
   if (error) {
     return (
-      <View style={styles.loaderContainer}>
-        <Text style={styles.errorText}>{error}</Text>
+      <View
+        style={[
+          styles.loaderContainer,
+          { backgroundColor: themeColors.background },
+        ]}
+      >
+        <Text style={[styles.errorText, { color: "red" }]}>{error}</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: themeColors.background }]}
+    >
       <SearchBar placeholder="Search events" onChangeText={() => {}} />
 
       <View style={styles.categories}>
@@ -70,7 +86,9 @@ export default function ExploreScreen({ navigation }) {
         ))}
       </View>
 
-      <Text style={styles.sectionTitle}>Upcoming events</Text>
+      <Text style={[styles.sectionTitle, { color: themeColors.text }]}>
+        Upcoming events
+      </Text>
       <View style={styles.flatListWrapper}>
         <FlatList
           horizontal
@@ -91,7 +109,9 @@ export default function ExploreScreen({ navigation }) {
           style={{ flexGrow: 0 }}
         />
       </View>
-      <Text style={styles.sectionTitle}>All events</Text>
+      <Text style={[styles.sectionTitle, { color: themeColors.text }]}>
+        All events
+      </Text>
       {events.slice(5, 15).map((event) => (
         <EventListItem
           key={event.id}
@@ -129,7 +149,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   errorText: {
-    color: "red",
     fontSize: 16,
   },
   flatListContainer: {
